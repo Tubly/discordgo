@@ -269,8 +269,8 @@ type WebhooksUpdate struct {
 
 // InviteCreate is the data for the InviteCreate event
 type InviteCreate struct {
-	GuildID   int64 `json:"guild_id,string"`
-	ChannelID int64 `json:"channel_id,string"`
+	GuildID   string `json:"guild_id,string"`
+	ChannelID string `json:"channel_id,string"`
 
 	Code      string    `json:"code"`
 	CreatedAt Timestamp `json:"created_at"`
