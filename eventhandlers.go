@@ -28,6 +28,8 @@ const (
 	guildRoleDeleteEventType          = "GUILD_ROLE_DELETE"
 	guildRoleUpdateEventType          = "GUILD_ROLE_UPDATE"
 	guildUpdateEventType              = "GUILD_UPDATE"
+	inviteCreateEventType             = "INVITE_CREATE"
+	inviteDeleteEventType             = "INVITE_DELETE"
 	messageAckEventType               = "MESSAGE_ACK"
 	messageCreateEventType            = "MESSAGE_CREATE"
 	messageDeleteEventType            = "MESSAGE_DELETE"
@@ -454,6 +456,46 @@ func (eh guildUpdateEventHandler) New() interface{} {
 // Handle is the handler for GuildUpdate events.
 func (eh guildUpdateEventHandler) Handle(s *Session, i interface{}) {
 	if t, ok := i.(*GuildUpdate); ok {
+		eh(s, t)
+	}
+}
+
+// inviteCreateEventHandler is an event handler for InviteCreate events.
+type inviteCreateEventHandler func(*Session, *InviteCreate)
+
+// Type returns the event type for InviteCreate events.
+func (eh inviteCreateEventHandler) Type() string {
+	return inviteCreateEventType
+}
+
+// New returns a new instance of InviteCreate.
+func (eh inviteCreateEventHandler) New() interface{} {
+	return &InviteCreate{}
+}
+
+// Handle is the handler for InviteCreate events.
+func (eh inviteCreateEventHandler) Handle(s *Session, i interface{}) {
+	if t, ok := i.(*InviteCreate); ok {
+		eh(s, t)
+	}
+}
+
+// inviteDeleteEventHandler is an event handler for InviteDelete events.
+type inviteDeleteEventHandler func(*Session, *InviteDelete)
+
+// Type returns the event type for InviteDelete events.
+func (eh inviteDeleteEventHandler) Type() string {
+	return inviteDeleteEventType
+}
+
+// New returns a new instance of InviteDelete.
+func (eh inviteDeleteEventHandler) New() interface{} {
+	return &InviteDelete{}
+}
+
+// Handle is the handler for InviteDelete events.
+func (eh inviteDeleteEventHandler) Handle(s *Session, i interface{}) {
+	if t, ok := i.(*InviteDelete); ok {
 		eh(s, t)
 	}
 }
@@ -959,6 +1001,10 @@ func handlerForInterface(handler interface{}) EventHandler {
 		return guildRoleUpdateEventHandler(v)
 	case func(*Session, *GuildUpdate):
 		return guildUpdateEventHandler(v)
+	case func(*Session, *InviteCreate):
+		return inviteCreateEventHandler(v)
+	case func(*Session, *InviteDelete):
+		return inviteDeleteEventHandler(v)
 	case func(*Session, *MessageAck):
 		return messageAckEventHandler(v)
 	case func(*Session, *MessageCreate):
@@ -1029,6 +1075,8 @@ func init() {
 	registerInterfaceProvider(guildRoleDeleteEventHandler(nil))
 	registerInterfaceProvider(guildRoleUpdateEventHandler(nil))
 	registerInterfaceProvider(guildUpdateEventHandler(nil))
+	registerInterfaceProvider(inviteCreateEventHandler(nil))
+	registerInterfaceProvider(inviteDeleteEventHandler(nil))
 	registerInterfaceProvider(messageAckEventHandler(nil))
 	registerInterfaceProvider(messageCreateEventHandler(nil))
 	registerInterfaceProvider(messageDeleteEventHandler(nil))

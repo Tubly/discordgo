@@ -266,3 +266,26 @@ type WebhooksUpdate struct {
 	GuildID   string `json:"guild_id"`
 	ChannelID string `json:"channel_id"`
 }
+
+// InviteCreate is the data for the InviteCreate event
+type InviteCreate struct {
+	GuildID   int64 `json:"guild_id,string"`
+	ChannelID int64 `json:"channel_id,string"`
+
+	Code      string    `json:"code"`
+	CreatedAt Timestamp `json:"created_at"`
+
+	MaxAge    int  `json:"max_age"`
+	MaxUses   int  `json:"max_uses"`
+	Temporary bool `json:"temporary"`
+	Uses      int  `json:"uses"`
+
+	Inviter *InviteUser `json:"inviter"`
+}
+
+// InviteDelete is the data for the InviteDelete event
+type InviteDelete struct {
+	GuildID   int64  `json:"guild_id,string"`
+	ChannelID int64  `json:"channel_id,string"`
+	Code      string `json:"code"`
+}

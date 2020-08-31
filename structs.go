@@ -1332,3 +1332,11 @@ const (
 func MakeIntent(intents Intent) *Intent {
 	return &intents
 }
+
+// InviteUser is a partial user obejct from the invite event(s)
+type InviteUser struct {
+	ID            int64  `json:"id,string"`
+	Avatar        string `json:"avatar"`
+	Discriminator string `json:"discriminator"`
+	Username      string `json:"username"`
+}
