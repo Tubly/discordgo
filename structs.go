@@ -1064,6 +1064,9 @@ type Webhook struct {
 	Name      string      `json:"name"`
 	Avatar    string      `json:"avatar"`
 	Token     string      `json:"token"`
+
+	// ApplicationID is the bot/OAuth2 application that created this webhook
+	ApplicationID string `json:"application_id,omitempty"`
 }
 
 // WebhookType is the type of Webhook (see WebhookType* consts) in the Webhook struct
@@ -1250,6 +1253,7 @@ const (
 	ErrCodeUnknownUser        = 10013
 	ErrCodeUnknownEmoji       = 10014
 	ErrCodeUnknownWebhook     = 10015
+	ErrCodeUnknownBan         = 10026
 
 	ErrCodeBotsCannotUseEndpoint  = 20001
 	ErrCodeOnlyBotsCanUseEndpoint = 20002

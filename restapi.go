@@ -693,6 +693,19 @@ func (s *Session) GuildBanCreate(guildID, userID string, days int) (err error) {
 	return s.GuildBanCreateWithReason(guildID, userID, "", days)
 }
 
+// GuildBan finds ban by given guild and user id and returns GuildBan structure
+func (s *Session) GuildBan(guildID, userID string) (st *GuildBan, err error) {
+
+	body, err := s.RequestWithBucketID("GET", EndpointGuildBan(guildID, userID), nil, EndpointGuildBan(guildID, userID))
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &st)
+
+	return
+}
+
 // GuildBanCreateWithReason bans the given user from the given guild also providing a reaso.
 // guildID   : The ID of a Guild.
 // userID    : The ID of a User
@@ -1626,6 +1639,17 @@ func (s *Session) ChannelMessageSendTTS(channelID string, content string) (*Mess
 func (s *Session) ChannelMessageSendEmbed(channelID string, embed *MessageEmbed) (*Message, error) {
 	return s.ChannelMessageSendComplex(channelID, &MessageSend{
 		Embed: embed,
+	})
+}
+
+// ChannelMessageSendReply sends a message to the given channel with reference data.
+// channelID : The ID of a Channel.
+// content   : The message to send.
+// reference : The message reference to send.
+func (s *Session) ChannelMessageSendReply(channelID string, content string, reference *MessageReference) (*Message, error) {
+	return s.ChannelMessageSendComplex(channelID, &MessageSend{
+		Content:   content,
+		Reference: reference,
 	})
 }
 
