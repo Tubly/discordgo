@@ -30,6 +30,7 @@ const (
 	guildUpdateEventType              = "GUILD_UPDATE"
 	inviteCreateEventType             = "INVITE_CREATE"
 	inviteDeleteEventType             = "INVITE_DELETE"
+	interactionCreateEventType        = "INTERACTION_CREATE"
 	messageAckEventType               = "MESSAGE_ACK"
 	messageCreateEventType            = "MESSAGE_CREATE"
 	messageDeleteEventType            = "MESSAGE_DELETE"
@@ -496,6 +497,22 @@ func (eh inviteDeleteEventHandler) New() interface{} {
 // Handle is the handler for InviteDelete events.
 func (eh inviteDeleteEventHandler) Handle(s *Session, i interface{}) {
 	if t, ok := i.(*InviteDelete); ok {
+// interactionCreateEventHandler is an event handler for InteractionCreate events.
+type interactionCreateEventHandler func(*Session, *InteractionCreate)
+
+// Type returns the event type for InteractionCreate events.
+func (eh interactionCreateEventHandler) Type() string {
+	return interactionCreateEventType
+}
+
+// New returns a new instance of InteractionCreate.
+func (eh interactionCreateEventHandler) New() interface{} {
+	return &InteractionCreate{}
+}
+
+// Handle is the handler for InteractionCreate events.
+func (eh interactionCreateEventHandler) Handle(s *Session, i interface{}) {
+	if t, ok := i.(*InteractionCreate); ok {
 		eh(s, t)
 	}
 }
@@ -1005,6 +1022,8 @@ func handlerForInterface(handler interface{}) EventHandler {
 		return inviteCreateEventHandler(v)
 	case func(*Session, *InviteDelete):
 		return inviteDeleteEventHandler(v)
+	case func(*Session, *InteractionCreate):
+		return interactionCreateEventHandler(v)
 	case func(*Session, *MessageAck):
 		return messageAckEventHandler(v)
 	case func(*Session, *MessageCreate):
@@ -1077,6 +1096,7 @@ func init() {
 	registerInterfaceProvider(guildUpdateEventHandler(nil))
 	registerInterfaceProvider(inviteCreateEventHandler(nil))
 	registerInterfaceProvider(inviteDeleteEventHandler(nil))
+	registerInterfaceProvider(interactionCreateEventHandler(nil))
 	registerInterfaceProvider(messageAckEventHandler(nil))
 	registerInterfaceProvider(messageCreateEventHandler(nil))
 	registerInterfaceProvider(messageDeleteEventHandler(nil))

@@ -290,3 +290,7 @@ type InviteDelete struct {
 	ChannelID int64  `json:"channel_id,string"`
 	Code      string `json:"code"`
 }
+// InteractionCreate is the data for a InteractionCreate event
+type InteractionCreate struct {
+	*Interaction
+}
