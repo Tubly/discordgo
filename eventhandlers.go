@@ -497,6 +497,10 @@ func (eh inviteDeleteEventHandler) New() interface{} {
 // Handle is the handler for InviteDelete events.
 func (eh inviteDeleteEventHandler) Handle(s *Session, i interface{}) {
 	if t, ok := i.(*InviteDelete); ok {
+		eh(s, t)
+	}
+}
+
 // interactionCreateEventHandler is an event handler for InteractionCreate events.
 type interactionCreateEventHandler func(*Session, *InteractionCreate)
 
