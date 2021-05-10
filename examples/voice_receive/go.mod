@@ -1,4 +1,4 @@
-module github.com/Tubly/discordgo/examples/voice_receive
+module github.com/bwmarrin/discordgo/examples/voice_receive
 
 require (
 	github.com/bwmarrin/discordgo v0.21.1
